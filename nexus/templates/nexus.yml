@@ -1,0 +1,120 @@
+# ============================================================
+# Nexus — Project Configuration
+# Place this file at .claude/nexus.yml in your project root
+# ============================================================
+
+# ── Project Info ──
+project:
+  name: ""           # Project name
+  type: "web"        # web | mobile | backend | cli | library | infra
+  language: ""       # typescript | javascript | python | go | rust | java
+  framework: ""      # react | nextjs | vue | django | fastapi | gin | etc.
+
+# ── Context Sources ──
+context:
+  sources:
+    # GitHub Issues (via gh CLI, no extra config needed)
+    github_issues:
+      enabled: true
+      repo: ""       # owner/repo, leave empty for auto-detect
+
+    # Jira integration (set JIRA_API_TOKEN + JIRA_DOMAIN env vars)
+    jira:
+      enabled: false
+      domain: ""     # your-domain.atlassian.net
+      project_key: ""
+
+    # Linear integration (set LINEAR_API_KEY env var)
+    linear:
+      enabled: false
+      team_id: ""
+
+    # Slack integration
+    slack:
+      enabled: false
+      channels:
+        - "#engineering"
+        - "#architecture"
+
+    # Figma integration (set FIGMA_ACCESS_TOKEN env var)
+    figma:
+      enabled: false
+      file_key: ""
+
+    # Sentry integration (set SENTRY_AUTH_TOKEN env var)
+    sentry:
+      enabled: false
+      organization: ""
+      project: ""
+
+    # Confluence integration
+    confluence:
+      enabled: false
+      domain: ""
+      space_key: ""
+
+    # Notion integration
+    notion:
+      enabled: false
+
+# ── Guardrails Rules ──
+guardrails:
+  enabled_rules:
+    # Security rules
+    - security/no-sql-injection
+    - security/no-xss
+    - security/no-hardcoded-secrets
+    # Quality rules
+    - quality/no-n-plus-1
+    - quality/no-unhandled-promise
+    - quality/no-console
+    # Style rules
+    - style/no-todo-without-ticket
+
+  # Custom project rules (optional)
+  custom_rules: []
+    # - id: project/no-direct-state-mutation
+    #   name: "No direct state mutation"
+    #   severity: error
+    #   patterns:
+    #     - 'this\.state\.\w+\s*='
+    #   message: "Use setState instead"
+
+  exclude_patterns:
+    - "**/*.test.*"
+    - "**/*.spec.*"
+    - "**/node_modules/**"
+    - "**/dist/**"
+    - "**/generated/**"
+    - "**/.next/**"
+
+# ── Knowledge Graph ──
+knowledge_graph:
+  auto_update: true
+  update_on_commit: true
+  expert_threshold: 5
+  analyze_dependencies: true
+  track_hotspots: true
+  track_fragility: true
+
+# ── Decision Records ──
+decisions:
+  auto_detect: true
+  template: "detailed"    # simple | detailed
+  review_required: true
+  reviewers: []
+
+# ── PR Automation ──
+pr:
+  auto_reviewer: true
+  include_decision_context: true
+  include_risk_analysis: true
+  auto_assign: false
+  draft_on_wip: true
+  labels: []
+
+# ── Notifications ──
+notifications:
+  on_decision_create: []  # Slack channels to notify
+  on_pr_create: []
+  on_guardrail_violation: []
